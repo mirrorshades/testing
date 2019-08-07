@@ -1,4 +1,5 @@
 const images = {
+  backArrow: require('./png/back-arrow-white.png'),
   cellGradientBackground: require('./png/cellGradientBackground.png'),
   ic_close: require('./png/ic_close.png'),
   ic_webBack: require('./png/ic_webBack.png'),

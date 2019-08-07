@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useContext, useRef } from 'react';
 import { ScrollView, TouchableOpacity, Text } from 'react-native';
 import DrawerLayout from 'react-native-gesture-handler/DrawerLayout';
-import MapView, { Marker, PROVIDER_GOOGLE, PROVIDER_DEFAULT } from 'react-native-maps';
+import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
+import { Grid, Section, Block } from 'react-native-responsive-layout';
 
 import TopBar from '@components/TopBar/TopBar';
 import Images from '@images';
@@ -64,46 +65,57 @@ const ListView = () => {
 
     return (
       <Container>
-        <TopBar leftIcon="ic_webBack" leftIconAction={closeDrawer} title="Lunch Thyme" rightIcon="icon_map" />
-        <MapView
-          provider={PROVIDER_GOOGLE}
-          customMapStyle={mapStyle}
-          style={{
-            width: screenWidth,
-            height: 180,
-          }}
-          initialRegion={{
-            latitude: currentVenue.location.lat,
-            longitude: currentVenue.location.lng,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
-          }}
-        >
-          <Marker
-            coordinate={{
-              latitude: currentVenue.location.lat,
-              longitude: currentVenue.location.lng,
-            }}
-            title={currentVenue.name}
-            description={currentVenue.category}
-          />
-        </MapView>
+        <TopBar leftIcon="backArrow" leftIconAction={closeDrawer} title="Lunch Thyme" rightIcon="icon_map" />
+        <Grid>
+          <Section>
+            <Block size="1/1" lgSize="1/2">
+              <MapView
+                provider={PROVIDER_GOOGLE}
+                customMapStyle={mapStyle}
+                style={{
+                  width: '100%',
+                  height: 180,
+                }}
+                initialRegion={{
+                  latitude: currentVenue.location.lat,
+                  longitude: currentVenue.location.lng,
+                  latitudeDelta: 0.0922,
+                  longitudeDelta: 0.0421,
+                }}
+              >
+                <Marker
+                  coordinate={{
+                    latitude: currentVenue.location.lat,
+                    longitude: currentVenue.location.lng,
+                  }}
+                  title={currentVenue.name}
+                  description={currentVenue.category}
+                />
+              </MapView>
+            </Block>
+            <Block size="1/1" lgSize="1/2">
+              <VenueLabel>
+                <VenueName>{currentVenue.name}</VenueName>
+                <VenueCategory>{currentVenue.category}</VenueCategory>
+              </VenueLabel>
 
-        <VenueLabel>
-          <VenueName>{currentVenue.name}</VenueName>
-          <VenueCategory>{currentVenue.category}</VenueCategory>
-        </VenueLabel>
+              <VenueDetails>
+                <BodyText>
+                  {currentVenue.location.address}
+                  {'\n'}
+                  {currentVenue.location.city}, {currentVenue.location.state} {currentVenue.location.postalCode}
+                </BodyText>
 
-        <VenueDetails>
-          <BodyText>
-            {currentVenue.location.address}
-            {'\n'}
-            {currentVenue.location.city}, {currentVenue.location.state} {currentVenue.location.postalCode}
-          </BodyText>
-
-          {currentVenue.contact && <BodyText>{currentVenue.contact.formattedPhone}</BodyText>}
-          {currentVenue.contact && <BodyText>@{currentVenue.contact.twitter}</BodyText>}
-        </VenueDetails>
+                {currentVenue.contact && typeof currentVenue.contact.formattedPhone !== 'undefined' && (
+                  <BodyText>{currentVenue.contact.formattedPhone}</BodyText>
+                )}
+                {currentVenue.contact && typeof currentVenue.contact.twitter !== 'undefined' && (
+                  <BodyText>@{currentVenue.contact.twitter}</BodyText>
+                )}
+              </VenueDetails>
+            </Block>
+          </Section>
+        </Grid>
       </Container>
     );
   };
@@ -119,16 +131,16 @@ const ListView = () => {
     >
       <Container>
         <TopBar title="Lunch Thyme" rightIcon="icon_map" />
-
         <ScrollView>
-          {data.restaurants.map((item, index) => (
-            <VenueButton
-              key={`${item.name}-${index}}`}
-              venue={item}
-              index={index}
-              onPress={() => handlePressVenue(item)}
-            />
-          ))}
+          <Grid>
+            <Section>
+              {data.restaurants.map((item, index) => (
+                <Block key={`${item.name}-${index}}`} size="1/1" lgSize="1/2">
+                  <VenueButton venue={item} index={index} onPress={() => handlePressVenue(item)} />
+                </Block>
+              ))}
+            </Section>
+          </Grid>
         </ScrollView>
       </Container>
     </DrawerLayout>
