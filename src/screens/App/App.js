@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useContext, useRef } from 'react';
-import { ScrollView, TouchableOpacity, Text } from 'react-native';
+import React, { useEffect, useState, useRef } from 'react';
+import { ScrollView, Text } from 'react-native';
 import DrawerLayout from 'react-native-gesture-handler/DrawerLayout';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { Grid, Section, Block } from 'react-native-responsive-layout';
@@ -36,6 +36,7 @@ const ListView = () => {
     fetchAPI();
   }, []);
 
+  // wait for data to load
   if (loading) {
     return (
       <ContainerCenter>
@@ -44,6 +45,7 @@ const ListView = () => {
     );
   }
 
+  // drawer handling
   const closeDrawer = () => {
     setCurrentVenue(null);
     myDrawer.current.closeDrawer();
@@ -53,6 +55,7 @@ const ListView = () => {
     myDrawer.current.openDrawer();
   };
 
+  // handle select venue
   const handlePressVenue = venue => {
     setCurrentVenue(venue);
     openDrawer();
@@ -60,6 +63,7 @@ const ListView = () => {
 
   const mapStyle = [];
 
+  // Used react native geture handler for drawer, would have preferred react navigation
   const renderDetails = () => {
     if (!currentVenue) return null;
 

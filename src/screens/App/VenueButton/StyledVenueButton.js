@@ -1,9 +1,5 @@
-import { Dimensions, Platform } from 'react-native';
 import styled from 'styled-components';
-
-const { width, height } = Dimensions.get('window');
-const screenHeight = width < height ? height : width;
-const screenWidth = width < height ? width : height;
+import { screenHeight, screenWidth } from '@utils';
 
 export const BackgroundImage = styled.ImageBackground`
   height: 180px;
